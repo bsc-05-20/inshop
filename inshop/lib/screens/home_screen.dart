@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:inshop/models/product_list.dart';
 import 'package:inshop/screens/profile_screen.dart';
+import 'package:inshop/screens/orders_screen.dart';
+import 'package:inshop/screens/wishlist_screen.dart';
+import 'package:inshop/screens/alerts_screen.dart';
 import 'package:inshop/widgets/bottom_navigation.dart';
 import 'package:inshop/widgets/product.dart';
 import 'package:inshop/screens/cart_screen.dart';
@@ -14,30 +17,27 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 0; // Start with Home
 
   // This function will be called when a bottom navigation item is tapped
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = index; // Update the selected index
     });
 
     // Handle navigation based on selected index
     switch (index) {
       case 0:
-        // Navigate to Home (already on HomeScreen)
+        // Already on Home
         break;
       case 1:
-        // Navigate to Orders
-        // Add your Orders screen navigation here
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OrdersScreen()));
         break;
       case 2:
-        // Navigate to Wishlist
-        // Add your Wishlist screen navigation here
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WishlistScreen()));
         break;
       case 3:
-        // Navigate to Alerts
-        // Add your Alerts screen navigation here
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AlertsScreen()));
         break;
     }
   }
@@ -60,24 +60,16 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.add_shopping_cart_sharp, size: 36),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const CartScreen(),
-                ),
-              );
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CartScreen()));
             },
           ),
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: IconButton(
               icon: const Icon(Icons.manage_accounts_rounded, size: 38),
-                          onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const ProfileScreen(),
-                ),
-              );
-            },
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProfileScreen()));
+              },
             ),
           ),
         ],
