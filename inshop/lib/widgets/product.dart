@@ -1,111 +1,67 @@
+// lib/widgets/product.dart
 import 'package:flutter/material.dart';
 
-class Product extends StatefulWidget implements PreferredSizeWidget {
-  @override
-  final Size preferredSize;
+class Product extends StatelessWidget {
+  final String imageUrl;
+  final String title;
+  final double rating;
+  final double price;
 
-  const Product({super.key})
-      : preferredSize = const Size.fromHeight(56.0);
-
-  @override
-  State<Product> createState() => _ProductState();
-}
-
-class _ProductState extends State<Product> {
-  int currentIndex = 0;
+  const Product({
+    super.key,
+    required this.imageUrl,
+    required this.title,
+    required this.rating,
+    required this.price,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 270, // Adjusted height to fit all content
+      height: 270,
       width: 175,
-      //color: Colors.blue,
       child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start, // Align content to the left
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16.0),
             child: Image.asset(
-              'assets/House.jpg',
-              fit: BoxFit.cover, // Maintain aspect ratio
-              height: 150, // Image height
-              width: double.infinity, // Full width
+              imageUrl,
+              fit: BoxFit.cover,
+              height: 150,
+              width: double.infinity,
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 4.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
-              'Asset GWX 2026',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              title,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
-                  Icon(
-                    Icons.star_border_purple500_rounded,
-                    size: 18,
-                    color: Colors.orange,
-                  ),
-                  Text(
-                    '5.1 Review',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                  ),
+                  const Icon(Icons.star_border_purple500_rounded, size: 18, color: Colors.orange),
+                  Text('$rating Review', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                 ],
               ),
-              Text(
-                '\$500,000',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-              ),
+              Text('\$$price', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
             ],
           ),
-          const SizedBox(height: 8), // Space before buttons
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(15, 189, 189, 189),
-                  foregroundColor: Colors.black87,
-                  side: const BorderSide(
-                    color: Color.fromARGB(193, 82, 81, 81),
-                    width: 1.0,
-                  ),
-                  minimumSize: const Size(69, 28), // Set the button size
-                ),
                 onPressed: () {},
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment
-                      .center, // Aligns icon and text to the center
-                  children: [
-                    Icon(
-                      Icons.shopping_cart_rounded, // Replace with any icon you want to use
-                      size: 16, // Adjust the icon size as needed
-                    ),
-                    SizedBox(
-                        width: 4), // Adds some space between the icon and text
-                    Text(
-                      'Add',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
+                child: const Text('Add', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(69, 28), // Set the button size
-                ),
                 onPressed: () {},
-                child: const Text(
-                  'Buy',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                ),
+                child: const Text('Buy', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
               ),
             ],
           ),

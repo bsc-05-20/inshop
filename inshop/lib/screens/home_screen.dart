@@ -1,8 +1,9 @@
+// lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:inshop/models/product_list.dart';
+import 'package:inshop/widgets/product.dart'; // Import your Product widget
 import 'package:inshop/screens/cart_screen.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
-import 'package:inshop/widgets/product.dart'; // Import the Product widget
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,33 +12,19 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'InShop',
-          style: GoogleFonts.ubuntu(
-            textStyle: Theme.of(context).textTheme.displayLarge,
-            fontSize: 30,
-            fontWeight: FontWeight.w700,
-            fontStyle: FontStyle.normal,
-          ),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
         ),
         actions: [
           IconButton(
-            icon: const Icon(
-              Icons.search,
-              size: 36,
-            ),
+            icon: const Icon(Icons.search, size: 36),
             onPressed: () {
-              showSearch(
-                context: context,
-                delegate: CustomSearchDelegate(),
-              );
+              showSearch(context: context, delegate: CustomSearchDelegate());
             },
           ),
           IconButton(
-            icon: const Icon(
-              Icons.add_shopping_cart_sharp,
-              size: 36,
-            ),
+            icon: const Icon(Icons.add_shopping_cart_sharp, size: 36),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -49,29 +36,29 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: IconButton(
-              icon: const Icon(
-                Icons.manage_accounts_rounded,
-                size: 38,
-              ),
+              icon: const Icon(Icons.manage_accounts_rounded, size: 38),
               onPressed: () {},
             ),
           ),
         ],
       ),
-      body: Padding(
+      body: GridView.builder(
         padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Number of columns
-            childAspectRatio: 0.6, // Adjust the aspect ratio to fit your design
-            crossAxisSpacing: 16.0, // Space between columns
-            mainAxisSpacing: 16.0, // Space between rows
-          ),
-          itemCount: 10, // Number of products to display
-          itemBuilder: (context, index) {
-            return const Product(); // Create a Product instance for each grid item
-          },
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // Two products per row
+          crossAxisSpacing: 16.0,
+          mainAxisSpacing: 16.0,
         ),
+        itemCount: products.length, // Get the number of products
+        itemBuilder: (context, index) {
+          final product = products[index];
+          return Product(
+            imageUrl: product.imageUrl,
+            title: product.title,
+            rating: product.rating,
+            price: product.price,
+          );
+        },
       ),
     );
   }
