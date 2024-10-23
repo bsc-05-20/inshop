@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:inshop/screens/alerts_screen.dart';
 import 'package:inshop/screens/cart_screen.dart';
 import 'package:inshop/screens/home_screen.dart';
+import 'package:inshop/screens/profile_screen.dart';
 import 'package:inshop/screens/wishlist_screen.dart';
 import 'package:inshop/widgets/bottom_navigation.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
@@ -73,7 +74,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
       padding: const EdgeInsets.only(right: 20.0),
       child: IconButton(
         icon: const Icon(Icons.manage_accounts_rounded, size: 38),
-        onPressed: () {},
+                      onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProfileScreen()));
+              },
       ),
     ),
   ],

@@ -19,24 +19,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _selectedIndex = index;
     });
 
-    // Handle navigation based on selected index
-    switch (index) {
-      case 0:
-        // Navigate to Home
-        Navigator.of(context).pushReplacementNamed('/home'); // Example navigation
-        break;
-      case 1:
-        // Already on Orders
-        break;
-      case 2:
-        // Navigate to Wishlist
-        Navigator.of(context).pushReplacementNamed('/wishlist'); // Example navigation
-        break;
-      case 3:
-        // Navigate to Alerts
-        Navigator.of(context).pushReplacementNamed('/alerts'); // Example navigation
-        break;
-    }
   }
 
   @override
@@ -68,10 +50,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           'Profile Screen', // Text to indicate this is the Orders screen
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-      ),
-      bottomNavigationBar: BottomNavigation(
-        selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
       ),
     );
   }
