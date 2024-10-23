@@ -31,7 +31,7 @@ class Product extends StatelessWidget {
         ],
       ),
       child: SizedBox(
-        height: 300, // Set the height as per your requirement
+        height: 270, // Set the height as per your requirement
         width: 175,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +41,7 @@ class Product extends StatelessWidget {
               child: Image.asset(
                 imageUrl,
                 fit: BoxFit.cover,
-                height: 140, // Adjust image height if needed
+                height: 86, // Adjust image height if needed
                 width: double.infinity,
               ),
             ),
@@ -49,37 +49,49 @@ class Product extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 3.0),
               child: Text(
                 title,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(
+                      fontSize: 16,
+                      letterSpacing: 1,
+                       fontWeight: FontWeight.w900),
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.star_border_purple500_rounded, size: 18, color: Colors.orange),
-                    Text('$rating Review', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                    const Icon(Icons.star_border_purple500_rounded,
+                        size: 18, color: Colors.orange),
+                    Text('$rating Review',
+                        style: const TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.bold)),
                   ],
                 ),
-                Text('\$$price', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 1),
+                Text('\$$price',
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.bold)),
               ],
             ),
-            const SizedBox(height: 0),
+            //const SizedBox(height: 0),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 OutlinedButton(
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
-                    minimumSize: const Size(60, 30),
+                    minimumSize: const Size(50, 28),
                   ),
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Add', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                      SizedBox(width: 4),
+                      Text('Add',
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.bold)),
+                      SizedBox(width:4),
                       Icon(Icons.shopping_cart_checkout_outlined, size: 16),
                     ],
                   ),
@@ -94,7 +106,9 @@ class Product extends StatelessWidget {
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Buy', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                      Text('Buy',
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.bold)),
                       SizedBox(width: 4),
                       Icon(Icons.attach_money_outlined, size: 16),
                     ],
