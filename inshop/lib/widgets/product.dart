@@ -31,7 +31,7 @@ class Product extends StatelessWidget {
         ],
       ),
       child: SizedBox(
-        height: 3000, // Set the height as per your requirement
+        height: 300, // Set the height as per your requirement
         width: 175,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,9 +75,9 @@ class Product extends StatelessWidget {
                     foregroundColor: Colors.black,
                     minimumSize: const Size(60, 30),
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text('Add', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                       SizedBox(width: 4),
                       Icon(Icons.shopping_cart_checkout_outlined, size: 16),
@@ -91,9 +91,9 @@ class Product extends StatelessWidget {
                     foregroundColor: Colors.white,
                     minimumSize: const Size(60, 30),
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text('Buy', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                       SizedBox(width: 4),
                       Icon(Icons.attach_money_outlined, size: 16),

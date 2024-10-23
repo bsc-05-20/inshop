@@ -16,7 +16,7 @@ class AppBarScreen extends StatelessWidget implements PreferredSizeWidget {
     return Center(
       child: AppBar(
         title: Text(
-          'InShop',
+          'InShop.',
           style: GoogleFonts.ubuntu(
             textStyle: Theme.of(context).textTheme.displayLarge,
             fontSize: 30,
