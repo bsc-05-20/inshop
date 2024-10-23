@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inshop/models/product_list.dart';
+import 'package:inshop/screens/profile_screen.dart';
 import 'package:inshop/widgets/bottom_navigation.dart';
 import 'package:inshop/widgets/product.dart';
 import 'package:inshop/screens/cart_screen.dart';
@@ -70,7 +71,13 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.only(right: 20.0),
             child: IconButton(
               icon: const Icon(Icons.manage_accounts_rounded, size: 38),
-              onPressed: () {},
+                          onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ProfileScreen(),
+                ),
+              );
+            },
             ),
           ),
         ],
