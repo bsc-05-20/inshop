@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:inshop/models/product_list.dart';
+import 'package:inshop/screens/alerts_screen.dart';
 import 'package:inshop/screens/profile_screen.dart';
 import 'package:inshop/screens/orders_screen.dart';
-import 'package:inshop/screens/wishlist_screen.dart';
-import 'package:inshop/screens/alerts_screen.dart';
+import 'package:inshop/screens/sell_screen.dart';
+import 'package:inshop/screens/deliveries_screen.dart';
 import 'package:inshop/widgets/bottom_navigation.dart';
 import 'package:inshop/widgets/product.dart';
 import 'package:inshop/screens/cart_screen.dart';
@@ -34,10 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OrdersScreen()));
         break;
       case 2:
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WishlistScreen()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SellScreen()));
         break;
       case 3:
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AlertsScreen()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DeliveryScreen()));
         break;
     }
   }
@@ -61,6 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.add_shopping_cart_sharp, size: 36),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CartScreen()));
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.notification_important_outlined, size: 36),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AlertsScreen()));
             },
           ),
           Padding(

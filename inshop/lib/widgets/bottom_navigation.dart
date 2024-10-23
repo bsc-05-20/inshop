@@ -43,16 +43,16 @@ class BottomNavigation extends StatelessWidget {
           ),
         ),
         BottomNavigationBarItem(
-          label: 'Wishlist',
+          label: 'Sell',
           icon: Icon(
-            Icons.favorite_border,
+            Icons.add_circle_outline_rounded,
             size: 36.0,
           ),
         ),
         BottomNavigationBarItem(
-          label: 'Alerts',
+          label: 'Deliveries',
           icon: Icon(
-            Icons.notification_important_outlined,
+            Icons.delivery_dining_outlined,
             size: 36.0,
           ),
         ),

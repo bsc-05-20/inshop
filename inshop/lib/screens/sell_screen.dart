@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:inshop/screens/alerts_screen.dart';
 import 'package:inshop/screens/cart_screen.dart';
 import 'package:inshop/screens/home_screen.dart'; // Import HomeScreen
 import 'package:inshop/screens/orders_screen.dart'; // Import OrdersScreen
-import 'package:inshop/screens/alerts_screen.dart'; // Import AlertsScreen
+import 'package:inshop/screens/deliveries_screen.dart'; // Import AlertsScreen
 import 'package:inshop/screens/profile_screen.dart';
 import 'package:inshop/widgets/bottom_navigation.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
 
-class WishlistScreen extends StatefulWidget {
-  const WishlistScreen({super.key});
+class SellScreen extends StatefulWidget {
+  const SellScreen({super.key});
 
   @override
-  _WishlistScreenState createState() => _WishlistScreenState();
+  _SellScreenState createState() => _SellScreenState();
 }
 
-class _WishlistScreenState extends State<WishlistScreen> {
+class _SellScreenState extends State<SellScreen> {
   int _selectedIndex = 2; // Set initial index to 2 for Wishlist
 
   // This function will be called when a bottom navigation item is tapped
@@ -39,7 +40,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
       case 3:
         // Navigate to Alerts
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const AlertsScreen()),
+          MaterialPageRoute(builder: (context) => const DeliveryScreen()),
         );
         break;
     }
@@ -51,7 +52,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
 appBar: AppBar(
   automaticallyImplyLeading: false, // This removes the back arrow
   title: const Text(
-    'Wishlist',
+    'Sell',
     style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
   ),
   actions: [
@@ -71,6 +72,12 @@ appBar: AppBar(
         );
       },
     ),
+              IconButton(
+            icon: const Icon(Icons.notification_important_outlined, size: 36),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AlertsScreen()));
+            },
+          ),
     Padding(
       padding: const EdgeInsets.only(right: 20.0),
       child: IconButton(
@@ -85,7 +92,7 @@ appBar: AppBar(
 
       body: const Center(
         child: Text(
-          'Wishlist Screen',
+          'Sales Screen',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),

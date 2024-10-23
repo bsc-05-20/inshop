@@ -1,46 +1,47 @@
-// Example for OrdersScreen
 import 'package:flutter/material.dart';
 import 'package:inshop/screens/alerts_screen.dart';
-import 'package:inshop/screens/deliveries_screen.dart';
 import 'package:inshop/screens/cart_screen.dart';
-import 'package:inshop/screens/home_screen.dart';
+import 'package:inshop/screens/home_screen.dart'; // Import HomeScreen
+import 'package:inshop/screens/orders_screen.dart'; // Import OrdersScreen
 import 'package:inshop/screens/profile_screen.dart';
-import 'package:inshop/screens/sell_screen.dart';
+import 'package:inshop/screens/sell_screen.dart'; // Import WishlistScreen
 import 'package:inshop/widgets/bottom_navigation.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
 
-class OrdersScreen extends StatefulWidget {
-  const OrdersScreen({super.key});
+class DeliveryScreen extends StatefulWidget {
+  const DeliveryScreen({super.key});
 
   @override
-  _OrdersScreenState createState() => _OrdersScreenState();
+  _DeliveryScreenState createState() => _DeliveryScreenState();
 }
 
-class _OrdersScreenState extends State<OrdersScreen> {
-  int _selectedIndex = 1; // Set initial index to 1 for Orders
+class _DeliveryScreenState extends State<DeliveryScreen> {
+  int _selectedIndex = 3; // Set initial index to 3 for Alerts
 
   // This function will be called when a bottom navigation item is tapped
   void _onItemTapped(int index) {
-    // Navigate and update the selected index
     switch (index) {
       case 0:
+        // Navigate to Home
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const HomeScreen()),
           (route) => false,
         );
         break;
       case 1:
-        // Already on Orders
+        // Navigate to Orders
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const OrdersScreen()),
+        );
         break;
       case 2:
+        // Navigate to Wishlist
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => const SellScreen()),
         );
         break;
       case 3:
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const DeliveryScreen()),
-        );
+        // Already on Alerts
         break;
     }
   }
@@ -48,10 +49,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-  appBar: AppBar(
+appBar: AppBar(
   automaticallyImplyLeading: false, // This removes the back arrow
   title: const Text(
-    'Orders',
+    'Deliveries',
     style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
   ),
   actions: [
@@ -81,7 +82,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       padding: const EdgeInsets.only(right: 20.0),
       child: IconButton(
         icon: const Icon(Icons.manage_accounts_rounded, size: 38),
-                      onPressed: () {
+                 onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProfileScreen()));
               },
       ),
@@ -91,7 +92,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
       body: const Center(
         child: Text(
-          'Orders Screen',
+          'Delivery Screen',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),

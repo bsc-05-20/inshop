@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:inshop/screens/alerts_screen.dart';
+import 'package:inshop/screens/deliveries_screen.dart';
 import 'package:inshop/screens/home_screen.dart';
 import 'package:inshop/screens/orders_screen.dart';
 import 'package:inshop/screens/profile_screen.dart';
-import 'package:inshop/screens/wishlist_screen.dart';
+import 'package:inshop/screens/sell_screen.dart';
 
 void main() {
   runApp(const MyApp());
