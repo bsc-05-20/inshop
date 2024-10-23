@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inshop/screens/cart_screen.dart';
+import 'package:inshop/widgets/bottomnavigation.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
 
+class BaseScreen extends StatelessWidget {
+  final Widget child; // The screen content
 
-class AppBarScreen extends StatelessWidget implements PreferredSizeWidget {
-  @override
-  final Size preferredSize;
-
-  const AppBarScreen({super.key})
-      : preferredSize = const Size.fromHeight(56.0);
+  const BaseScreen({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: AppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text(
           'InShop',
           style: GoogleFonts.ubuntu(
@@ -63,6 +61,8 @@ class AppBarScreen extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       ),
+      body: child, // The main content of the screen
+      bottomNavigationBar: const BottomNavigation(), // Add the bottom navigation
     );
   }
 }
