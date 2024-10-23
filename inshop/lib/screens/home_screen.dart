@@ -1,12 +1,45 @@
-// lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:inshop/models/product_list.dart';
+import 'package:inshop/widgets/bottom_navigation.dart';
 import 'package:inshop/widgets/product.dart';
 import 'package:inshop/screens/cart_screen.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+
+  // This function will be called when a bottom navigation item is tapped
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    // Handle navigation based on selected index
+    switch (index) {
+      case 0:
+        // Navigate to Home (already on HomeScreen)
+        break;
+      case 1:
+        // Navigate to Orders
+        // Add your Orders screen navigation here
+        break;
+      case 2:
+        // Navigate to Wishlist
+        // Add your Wishlist screen navigation here
+        break;
+      case 3:
+        // Navigate to Alerts
+        // Add your Alerts screen navigation here
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +93,10 @@ class HomeScreen extends StatelessWidget {
           );
         },
       ),
-      
+      bottomNavigationBar: BottomNavigation(
+        selectedIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,
+      ),
     );
   }
 }
