@@ -47,7 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: const Center(
         child: Text(
-          'Profile Screen', // Text to indicate this is the Orders screen
+          'Please set up your "Profile"', // Text to indicate this is the Orders screen
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),

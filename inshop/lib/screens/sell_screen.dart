@@ -92,7 +92,7 @@ appBar: AppBar(
 
       body: const Center(
         child: Text(
-          'Sales Screen',
+          'Add product to Sell',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),

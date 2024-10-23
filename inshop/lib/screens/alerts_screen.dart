@@ -47,7 +47,7 @@ class _AlertsScreenState extends State<AlertsScreen> {
       ),
       body: const Center(
         child: Text(
-          'Alerts Screen', // Text to indicate this is the Orders screen
+          'You have no new "Alerts"', // Text to indicate this is the Orders screen
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),

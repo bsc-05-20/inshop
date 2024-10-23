@@ -91,7 +91,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
       body: const Center(
         child: Text(
-          'Orders Screen',
+          'Sorry you have no new "Orders"',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),

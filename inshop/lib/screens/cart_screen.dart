@@ -50,7 +50,7 @@ class _CartScreenState extends State<CartScreen> {
       ),
       body: const Center(
         child: Text(
-          'Cart Screen', // Text to indicate this is the Orders screen
+          'Your "Cart" is empty', // Text to indicate this is the Orders screen
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
