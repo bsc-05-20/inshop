@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inshop/screens/cart_screen.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
+import 'package:inshop/widgets/product.dart'; // Import the Product widget
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key}); // Removed the 'required Center child' parameter
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +58,20 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(
-        child: Text('Welcome to InShop!'), // You can change this text as needed
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, // Number of columns
+            childAspectRatio: 0.6, // Adjust the aspect ratio to fit your design
+            crossAxisSpacing: 16.0, // Space between columns
+            mainAxisSpacing: 16.0, // Space between rows
+          ),
+          itemCount: 10, // Number of products to display
+          itemBuilder: (context, index) {
+            return const Product(); // Create a Product instance for each grid item
+          },
+        ),
       ),
     );
   }
