@@ -54,16 +54,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               showSearch(context: context, delegate: CustomSearchDelegate());
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.add_shopping_cart_sharp, size: 36),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const CartScreen(),
-                ),
-              );
-            },
-          ),
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: IconButton(
