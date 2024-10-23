@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inshop/screens/home_screen.dart';
 
 class BottomNavigation extends StatefulWidget implements PreferredSizeWidget {
   @override

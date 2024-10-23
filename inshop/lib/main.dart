@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(), // Set the HomeScreen as the initial screen
+      home: HomeScreen(), // This will be your HomeScreen without any extra text
     );
   }
 }

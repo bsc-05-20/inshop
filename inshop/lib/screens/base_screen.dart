@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inshop/screens/cart_screen.dart';
-import 'package:inshop/widgets/bottomnavigation.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
-
 class BaseScreen extends StatelessWidget {
   final Widget child; // The screen content
 
@@ -62,7 +60,7 @@ class BaseScreen extends StatelessWidget {
         ],
       ),
       body: child, // The main content of the screen
-      bottomNavigationBar: const BottomNavigation(), // Add the bottom navigation
+     // bottomNavigationBar: const BottomNavigation(), // Add the bottom navigation
     );
   }
 }
