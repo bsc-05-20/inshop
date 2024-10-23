@@ -14,11 +14,5 @@ final List<ProductModel> products = [
     rating: 4.5,
     price: 3000.0,
   ),
-  ProductModel(
-    imageUrl: 'assets/Car.jpg', // Add a valid image asset path
-    title: 'Car',
-    rating: 4.0,
-    price: 150.0,
-  ),
   // Add more products as needed
 ];

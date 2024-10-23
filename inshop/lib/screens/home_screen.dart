@@ -1,7 +1,7 @@
 // lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:inshop/models/product_list.dart';
-import 'package:inshop/widgets/product.dart'; // Import your Product widget
+import 'package:inshop/widgets/product.dart';
 import 'package:inshop/screens/cart_screen.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
 
@@ -49,7 +49,7 @@ class HomeScreen extends StatelessWidget {
           crossAxisSpacing: 16.0,
           mainAxisSpacing: 16.0,
         ),
-        itemCount: products.length, // Get the number of products
+        itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
           return Product(
