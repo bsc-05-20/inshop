@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:inshop/models/cart_list.dart';
 import 'package:inshop/widgets/bottom_navigation.dart';
-import 'package:inshop/screens/cart_screen.dart';
+import 'package:inshop/widgets/cart_items.dart';
+import 'package:inshop/widgets/cart_product.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
 
 class CartScreen extends StatefulWidget {
@@ -29,7 +31,8 @@ class _CartScreenState extends State<CartScreen> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(left: 16.0), // Add padding to the left
+            padding:
+                const EdgeInsets.only(left: 16.0), // Add padding to the left
             child: IconButton(
               icon: const Icon(Icons.search, size: 36),
               onPressed: () {
@@ -38,7 +41,8 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 16.0), // Add padding to the right
+            padding:
+                const EdgeInsets.only(right: 16.0), // Add padding to the right
             child: IconButton(
               icon: const Icon(Icons.add_shopping_cart_sharp, size: 36),
               onPressed: () {
@@ -48,10 +52,42 @@ class _CartScreenState extends State<CartScreen> {
           ),
         ],
       ),
-      body: const Center(
-        child: Text(
-          'Your "Cart" is empty', // Text to indicate this is the Orders screen
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: GridView.builder(
+        padding: const EdgeInsets.all(16.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 1, // Two cart_items per row
+          crossAxisSpacing: 16.0,
+          mainAxisSpacing: 16,
+        ),
+        itemCount: cart_items.length,
+        itemBuilder: (context, index) {
+          final cart_item = cart_items[index];
+          return CartProduct(
+            imageUrl: cart_item.imageUrl,
+            title: cart_item.title,
+            quantity: cart_item.quantity,
+            price: cart_item.price,
+          );
+        },
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ElevatedButton(
+          onPressed: () {
+            // Add checkout functionality here
+          },
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.all(16.0),
+            backgroundColor: Colors.green, // Button background color
+            foregroundColor: Colors.white, // Text color
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+          ),
+          child: const Text(
+            'Checkout for \$480.00',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );
