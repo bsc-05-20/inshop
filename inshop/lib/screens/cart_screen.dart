@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inshop/models/cart_list.dart';
 import 'package:inshop/widgets/bottom_navigation.dart';
-import 'package:inshop/widgets/cart_items.dart';
 import 'package:inshop/widgets/cart_product.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
 
@@ -59,14 +58,14 @@ class _CartScreenState extends State<CartScreen> {
           crossAxisSpacing: 16.0,
           mainAxisSpacing: 16,
         ),
-        itemCount: cart_items.length,
+        itemCount: cartItems.length,
         itemBuilder: (context, index) {
-          final cart_item = cart_items[index];
+          final cartItem = cartItems[index];
           return CartProduct(
-            imageUrl: cart_item.imageUrl,
-            title: cart_item.title,
-            quantity: cart_item.quantity,
-            price: cart_item.price,
+            imageUrl: cartItem.imageUrl,
+            title: cartItem.title,
+            quantity: cartItem.quantity,
+            price: cartItem.price,
           );
         },
       ),

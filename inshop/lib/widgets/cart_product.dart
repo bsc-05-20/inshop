@@ -62,7 +62,7 @@ class CartProduct extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '$quantity 55', 
+                    '$quantity', 
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
