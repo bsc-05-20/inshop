@@ -17,29 +17,62 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0; // Start with Home
+  late TabController _tabController; // Declare TabController as late
+  int _tabIndex = 0; // Keep track of the current tab index
 
-  // This function will be called when a bottom navigation item is tapped
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 8, vsync: this); // Length should be 8
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose(); // Dispose of the TabController
+    super.dispose();
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index; // Update the selected index
     });
 
-    // Handle navigation based on selected index
     switch (index) {
       case 0:
         // Already on Home
         break;
       case 1:
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OrdersScreen()));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const OrdersScreen()));
         break;
       case 2:
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SellScreen()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const SellScreen()));
         break;
       case 3:
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DeliveryScreen()));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const DeliveryScreen()));
         break;
+    }
+  }
+
+  void _goToPreviousTab() {
+    if (_tabIndex > 0) {
+      setState(() {
+        _tabIndex--;
+        _tabController.animateTo(_tabIndex);
+      });
+    }
+  }
+
+  void _goToNextTab() {
+    if (_tabIndex < _tabController.length - 1) { // Ensure tab index stays within bounds
+      setState(() {
+        _tabIndex++;
+        _tabController.animateTo(_tabIndex);
+      });
     }
   }
 
@@ -61,13 +94,15 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.add_shopping_cart_sharp, size: 36),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CartScreen()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const CartScreen()));
             },
           ),
           IconButton(
             icon: const Icon(Icons.notification_important_outlined, size: 36),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AlertsScreen()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const AlertsScreen()));
             },
           ),
           Padding(
@@ -75,34 +110,88 @@ class _HomeScreenState extends State<HomeScreen> {
             child: IconButton(
               icon: const Icon(Icons.manage_accounts_rounded, size: 38),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProfileScreen()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ProfileScreen()));
               },
             ),
           ),
         ],
-      ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(16.0),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // Two products per row
-          crossAxisSpacing: 16.0,
-          mainAxisSpacing:16,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(50),
+          child: Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: _goToPreviousTab,
+              ),
+              Expanded(
+                child: TabBar(
+                  controller: _tabController,
+                  tabs: const [
+                    Tab(text: 'Electronics'),
+                    Tab(text: 'Estate'),
+                    Tab(text: 'Clothes'),
+                    Tab(text: 'Shoes'),
+                    Tab(text: 'Cars'),
+                    Tab(text: 'Accessories'),
+                    Tab(text: 'Furniture'),
+                    Tab(text: 'Sports'),
+                  ],
+                  isScrollable: true,
+                  onTap: (index) {
+                    setState(() {
+                      _tabIndex = index; // Update current tab index
+                    });
+                  },
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.arrow_forward),
+                onPressed: _goToNextTab,
+              ),
+            ],
+          ),
         ),
-        itemCount: products.length,
-        itemBuilder: (context, index) { 
-          final product = products[index];
-          return Product(
-            imageUrl: product.imageUrl,
-            title: product.title,
-            rating: product.rating,
-            price: product.price,
-          );
-        },
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          _buildCategoryView('Electronics'),
+          _buildCategoryView('Estate'),
+          _buildCategoryView('Clothes'),
+          _buildCategoryView('Shoes'),
+          _buildCategoryView('Cars'),
+          _buildCategoryView('Accessories'),
+          _buildCategoryView('Furniture'),
+          _buildCategoryView('Sports'),
+        ],
       ),
       bottomNavigationBar: BottomNavigation(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,
       ),
+    );
+  }
+
+  Widget _buildCategoryView(String category) {
+    final filteredProducts = products.where((product) => product.category == category).toList();
+    return GridView.builder(
+      padding: const EdgeInsets.all(16.0),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 16.0,
+        mainAxisSpacing: 16,
+      ),
+      itemCount: filteredProducts.length,
+      itemBuilder: (context, index) {
+        final product = filteredProducts[index];
+        return Product(
+          imageUrl: product.imageUrl,
+          title: product.title,
+          rating: product.rating,
+          price: product.price,
+        );
+      },
     );
   }
 }

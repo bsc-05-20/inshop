@@ -16,7 +16,7 @@ class SellScreen extends StatefulWidget {
 }
 
 class _SellScreenState extends State<SellScreen> {
-  int _selectedIndex = 2; // Set initial index to 2 for Wishlist
+  final int _selectedIndex = 2; // Set initial index to 2 for Wishlist
 
   // This function will be called when a bottom navigation item is tapped
   void _onItemTapped(int index) {

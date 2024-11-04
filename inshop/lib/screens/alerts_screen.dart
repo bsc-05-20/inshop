@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inshop/widgets/bottom_navigation.dart';
-import 'package:inshop/screens/cart_screen.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
 
 class AlertsScreen extends StatefulWidget {

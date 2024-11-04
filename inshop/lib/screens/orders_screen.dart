@@ -17,7 +17,7 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  int _selectedIndex = 1; // Set initial index to 1 for Orders
+  final int _selectedIndex = 1; // Set initial index to 1 for Orders
 
   // This function will be called when a bottom navigation item is tapped
   void _onItemTapped(int index) {

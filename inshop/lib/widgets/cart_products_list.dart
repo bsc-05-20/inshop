@@ -1,10 +1,10 @@
-class CartItem {
+class CartProduct {
   final String title;
   final String imageUrl;
   final double price;
   final int quantity;
 
-  CartItem({
+  CartProduct({
     required this.title,
     required this.imageUrl,
     required this.price,
@@ -13,8 +13,8 @@ class CartItem {
 }
 
 // Sample cart data
-List<CartItem> cartItems = [
-  CartItem(
+List<CartProduct> cartProducts = [
+  CartProduct(
     title: 'Car',
     imageUrl: 'assets/Car.png', // Replace with actual asset path
     price: 570.00,

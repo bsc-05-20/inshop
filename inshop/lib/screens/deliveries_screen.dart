@@ -16,7 +16,7 @@ class DeliveryScreen extends StatefulWidget {
 }
 
 class _DeliveryScreenState extends State<DeliveryScreen> {
-  int _selectedIndex = 3; // Set initial index to 3 for Alerts
+  final int _selectedIndex = 3; // Set initial index to 3 for Alerts
 
   // This function will be called when a bottom navigation item is tapped
   void _onItemTapped(int index) {

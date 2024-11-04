@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inshop/models/cart_list.dart';
-import 'package:inshop/widgets/bottom_navigation.dart';
-import 'package:inshop/widgets/cart_product.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
 
 class CartScreen extends StatefulWidget {
@@ -51,23 +48,21 @@ class _CartScreenState extends State<CartScreen> {
           ),
         ],
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(16.0),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1, // Two cart_items per row
-          crossAxisSpacing: 16.0,
-          mainAxisSpacing: 16,
+      body: Center(
+        child: Container(
+          height: 200, // Specify the height
+          width: 300, // Specify the width
+          color: Colors.blue, // Specify the background color
+          child: const Center(
+            child: Text(
+              'This is your cart screen',
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+          ),
         ),
-        itemCount: cartItems.length,
-        itemBuilder: (context, index) {
-          final cartItem = cartItems[index];
-          return CartProduct(
-            imageUrl: cartItem.imageUrl,
-            title: cartItem.title,
-            quantity: cartItem.quantity,
-            price: cartItem.price,
-          );
-        },
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -1,0 +1,21 @@
+     body: GridView.builder(
+        padding: const EdgeInsets.all(16.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 1, // One cart item per row
+          crossAxisSpacing: 16.0,
+          mainAxisSpacing: 16.0,
+        ),
+        itemCount: cartItems.length,
+        itemBuilder: (context, index) {
+          final cartItem = cartItems[index];
+          return SizedBox(
+            height: 100, // Adjust this value to your preferred height
+            child: CartProduct(
+              imageUrl: cartItem.imageUrl,
+              title: cartItem.title,
+              quantity: cartItem.quantity,
+              price: cartItem.price,
+            ),
+          );
+        },
+      ),
