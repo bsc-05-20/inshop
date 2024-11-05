@@ -191,6 +191,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         leading: Icon(icon, size: 30, color: Colors.blue),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(value),
+        trailing: IconButton(
+          icon: const Icon(Icons.edit, color: Colors.blue), // Edit icon
+          onPressed: () {
+            // Handle edit action
+          },
+        ),
         onTap: onTap,
       ),
     );
