@@ -17,7 +17,28 @@ class DeliveryScreen extends StatefulWidget {
 }
 
 class _DeliveryScreenState extends State<DeliveryScreen> {
-  final int _selectedIndex = 3; // Set initial index to 3 for Alerts
+  final int _selectedIndex = 3; // Set initial index to 3 for Deliveries
+
+  // Sample data for deliveries
+  final List<Map<String, dynamic>> deliveries = [
+    {
+      'orderID': '12345',
+      'status': 'In Transit',
+      'productName': 'Wireless Headphones',
+      'deliveryDate': '2024-11-10',
+      'recipient': 'John Doe',
+      'trackingNumber': 'TRK123456'
+    },
+    {
+      'orderID': '12346',
+      'status': 'Delivered',
+      'productName': 'Smartphone',
+      'deliveryDate': '2024-11-03',
+      'recipient': 'Jane Smith',
+      'trackingNumber': 'TRK123457'
+    },
+    // Add more deliveries as needed
+  ];
 
   // This function will be called when a bottom navigation item is tapped
   void _onItemTapped(int index) {
@@ -87,8 +108,8 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
           IconButton(
             icon: const Icon(Icons.notification_important_outlined, size: 36),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const AlertsScreen()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const AlertsScreen()));
             },
           ),
           Padding(
@@ -143,8 +164,8 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
               onSelected: (item) {
                 switch (item) {
                   case 1:
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const ProfileScreen()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const ProfileScreen()));
                     break;
                   case 2:
                     _showLogoutDialog(); // Show the logout dialog
@@ -155,10 +176,24 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
           ),
         ],
       ),
-      body: const Center(
-        child: Text(
-          'Oops no "Deliveries" for you',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            const Text(
+              'Your Deliveries',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                itemCount: deliveries.length,
+                itemBuilder: (context, index) {
+                  return _buildDeliveryTile(deliveries[index]);
+                },
+              ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavigation(
@@ -167,4 +202,76 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
       ),
     );
   }
+
+Widget _buildDeliveryTile(Map<String, dynamic> delivery) {
+  return Card(
+    margin: const EdgeInsets.symmetric(vertical: 8),
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Order ID: ${delivery['orderID']}',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Product: ${delivery['productName']}',
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Status: ${delivery['status']}',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Delivery Date: ${delivery['deliveryDate']}',
+            style: const TextStyle(
+              fontSize: 14, 
+              fontWeight: FontWeight.bold, // Made bold
+              color: Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Recipient: ${delivery['recipient']}',
+            style: const TextStyle(
+              fontSize: 14, 
+              fontWeight: FontWeight.bold, // Made bold
+              color: Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Tracking No: ${delivery['trackingNumber']}',
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold, // Made bold
+                  color: Colors.blue,
+                ),
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  // Add tracking functionality
+                },
+                icon: const Icon(Icons.track_changes),
+                label: const Text('Track'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue, // Background color
+                  foregroundColor: Colors.white, // Text color
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 }
