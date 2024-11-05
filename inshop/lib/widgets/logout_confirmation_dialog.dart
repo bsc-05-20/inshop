@@ -25,12 +25,12 @@ class LogoutConfirmationDialog extends StatelessWidget {
         OutlinedButton(
           onPressed: onCancel,
           style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: Colors.black),
+            side: const BorderSide(color: Color.fromARGB(188, 0, 0, 0)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: const [
-              Icon(Icons.cancel, color: Colors.black),
+              Icon(Icons.cancel, color: Color.fromARGB(228, 0, 0, 0)),
               SizedBox(width: 8), // Spacing between icon and text
               Text(
                 'Cancel',
@@ -49,12 +49,12 @@ class LogoutConfirmationDialog extends StatelessWidget {
             Navigator.of(context).pop(); // Close the dialog
           },
           style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: Colors.black),
+            side: const BorderSide(color: Color.fromARGB(171, 0, 0, 0)),
           ),
           child: const Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.logout, color: Colors.black),
+              Icon(Icons.logout, color: Color.fromARGB(239, 0, 0, 0)),
               SizedBox(width: 8), // Spacing between icon and text
               Text(
                 'Log Out',

@@ -9,6 +9,7 @@ import 'package:inshop/widgets/bottom_navigation.dart';
 import 'package:inshop/widgets/product.dart';
 import 'package:inshop/screens/cart_screen.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
+import 'package:inshop/widgets/logout_confirmation_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,44 +19,54 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
-  int _selectedIndex = 0; // Start with Home
-  late TabController _tabController; // Declare TabController as late
-  int _tabIndex = 0; // Keep track of the current tab index
+  int _selectedIndex = 0;
+  late TabController _tabController;
+  int _tabIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 8, vsync: this); // Length should be 8
+    _tabController = TabController(length: 8, vsync: this);
   }
 
   @override
   void dispose() {
-    _tabController.dispose(); // Dispose of the TabController
+    _tabController.dispose();
     super.dispose();
   }
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index; // Update the selected index
+      _selectedIndex = index;
     });
 
     switch (index) {
       case 0:
-        // Already on Home
         break;
       case 1:
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const OrdersScreen()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OrdersScreen()));
         break;
       case 2:
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const SellScreen()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SellScreen()));
         break;
       case 3:
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const DeliveryScreen()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DeliveryScreen()));
         break;
     }
+  }
+
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => LogoutConfirmationDialog(
+        onConfirm: () {
+          // Log out functionality
+        },
+        onCancel: () {
+          Navigator.of(context).pop();
+        },
+      ),
+    );
   }
 
   void _goToPreviousTab() {
@@ -68,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   void _goToNextTab() {
-    if (_tabIndex < _tabController.length - 1) { // Ensure tab index stays within bounds
+    if (_tabIndex < _tabController.length - 1) {
       setState(() {
         _tabIndex++;
         _tabController.animateTo(_tabIndex);
@@ -94,24 +105,73 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           IconButton(
             icon: const Icon(Icons.add_shopping_cart_sharp, size: 36),
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const CartScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CartScreen()));
             },
           ),
           IconButton(
             icon: const Icon(Icons.notification_important_outlined, size: 36),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const AlertsScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AlertsScreen()));
             },
           ),
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
-            child: IconButton(
+            child: PopupMenuButton<int>(
               icon: const Icon(Icons.manage_accounts_rounded, size: 38),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ProfileScreen()));
+              itemBuilder: (context) => [
+                const PopupMenuItem<int>(
+                  value: 0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Logged in as Morten Msiska',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      Divider(),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem<int>(
+                  value: 1,
+                  child: Row(
+                    children: [
+                      Icon(Icons.settings, color: Colors.black87),
+                      SizedBox(width: 8),
+                      Text(
+                        'Settings',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem<int>(
+                  value: 2,
+                  child: Row(
+                    children: [
+                      Icon(Icons.logout, color: Colors.black87),
+                      SizedBox(width: 8),
+                      Text(
+                        'Log Out',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+              onSelected: (item) {
+                switch (item) {
+                  case 1:
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProfileScreen()));
+                    break;
+                  case 2:
+                    _showLogoutDialog();
+                    break;
+                }
               },
             ),
           ),
@@ -140,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   isScrollable: true,
                   onTap: (index) {
                     setState(() {
-                      _tabIndex = index; // Update current tab index
+                      _tabIndex = index;
                     });
                   },
                 ),
