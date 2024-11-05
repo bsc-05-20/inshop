@@ -1,53 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:inshop/widgets/custom_search_delegate.dart';
+import 'package:inshop/widgets/alert.dart';
 
-class AlertsScreen extends StatefulWidget {
-  const AlertsScreen({super.key});
-
-  @override
-  _AlertsScreenState createState() => _AlertsScreenState();
-}
-
-class _AlertsScreenState extends State<AlertsScreen> {
-  int _selectedIndex = 1; // Set initial index to 1 for Orders
-
-  // This function will be called when a bottom navigation item is tapped
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-  }
+class AlertsScreen extends StatelessWidget {
+  const AlertsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Text(
           'Alerts',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search, size: 36),
-            onPressed: () {
-              showSearch(context: context, delegate: CustomSearchDelegate());
+        centerTitle: true,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(8.0),
+        children: [
+          AlertTile(
+            icon: Icons.work_history_outlined,
+            title: 'Order',
+            message: 'Client ordered a product.',
+            timestamp: '2h',
+            onNavigate: () {
+              // Define navigation action for this alert
+             // Navigator.push(context, MaterialPageRoute(builder: (context) => OrderDetailsScreen()));
             },
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: IconButton(
-              icon: const Icon(Icons.notification_important_outlined, size: 38),
-              onPressed: () {},
-            ),
+          const SizedBox(height: 10.0),
+          AlertTile(
+            icon: Icons.delivery_dining_outlined,
+            title: 'Delivery',
+            message: 'Your product arrived.',
+            timestamp: '5h',
+            onNavigate: () {
+              // Define navigation action for this alert
+             // Navigator.push(context, MaterialPageRoute(builder: (context) => DeliveryDetailsScreen()));
+            },
+          ),
+          const SizedBox(height: 10.0),
+          AlertTile(
+            icon: Icons.shop_2_outlined,
+            title: 'New product',
+            message: 'New iPhone going at 400k.',
+            timestamp: '1d',
+            onNavigate: () {
+              // Define navigation action for this alert
+              //Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen()));
+            },
           ),
         ],
-      ),
-      body: const Center(
-        child: Text(
-          'You have no new "Alerts"', // Text to indicate this is the Orders screen
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
       ),
     );
   }
