@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inshop/widgets/alert.dart';
 
 class AlertsScreen extends StatelessWidget {
-  const AlertsScreen({Key? key}) : super(key: key);
+  const AlertsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

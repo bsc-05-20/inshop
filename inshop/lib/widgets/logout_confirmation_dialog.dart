@@ -5,10 +5,10 @@ class LogoutConfirmationDialog extends StatelessWidget {
   final VoidCallback onCancel;
 
   const LogoutConfirmationDialog({
-    Key? key,
+    super.key,
     required this.onConfirm,
     required this.onCancel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +27,9 @@ class LogoutConfirmationDialog extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             side: const BorderSide(color: Color.fromARGB(188, 0, 0, 0)),
           ),
-          child: Row(
+          child: const Row(
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
               Icon(Icons.cancel, color: Color.fromARGB(228, 0, 0, 0)),
               SizedBox(width: 8), // Spacing between icon and text
               Text(

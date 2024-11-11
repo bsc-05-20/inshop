@@ -8,13 +8,13 @@ class AlertTile extends StatelessWidget {
   final VoidCallback? onNavigate; // Callback for navigation
 
   const AlertTile({
-    Key? key,
+    super.key,
     required this.icon,
     required this.title,
     required this.message,
     required this.timestamp,
     this.onNavigate,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
