@@ -1,4 +1,3 @@
-// lib/widgets/product.dart
 import 'package:flutter/material.dart';
 
 class Product extends StatelessWidget {
@@ -15,109 +14,47 @@ class Product extends StatelessWidget {
     required this.price,
   });
 
+  // Map JSON data to Product model
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      imageUrl: json['imageUrl'],
+      title: json['title'],
+      rating: json['rating'].toDouble(),
+      price: json['price'].toDouble(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white, // Change this to your desired background color
-        borderRadius: BorderRadius.circular(16.0), // Optional: Rounded corners
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2), // Shadow color
-            spreadRadius: 2, // Spread radius
-            blurRadius: 5, // Blur radius
-            offset: const Offset(0, 3), // Shadow position
+    // Return a widget to represent the product
+    return Card(
+      elevation: 4.0,
+      margin: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.network(imageUrl), // Display the image
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.titleLarge, // Updated to titleLarge
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                const Icon(Icons.star, color: Colors.yellow),
+                Text('$rating', style: TextStyle(fontSize: 16)),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('\$$price', style: const TextStyle(fontSize: 16)),
           ),
         ],
-      ),
-      child: SizedBox(
-        height: 270, // Set the height as per your requirement
-        width: 175,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16.0),
-              child: Image.asset(
-                imageUrl,
-                fit: BoxFit.cover,
-                height: 86, // Adjust image height if needed
-                width: double.infinity,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 3.0),
-              child: Text(
-                title,
-                style:
-                    const TextStyle(
-                      fontSize: 16,
-                      letterSpacing: 1,
-                       fontWeight: FontWeight.w900),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.star_border_purple500_rounded,
-                        size: 18, color: Colors.orange),
-                    Text('$rating Review',
-                        style: const TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-                const SizedBox(height: 1),
-                Text('\$$price',
-                    style: const TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.bold)),
-              ],
-            ),
-            //const SizedBox(height: 0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    minimumSize: const Size(50, 28),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('Add',
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold)),
-                      SizedBox(width:4),
-                      Icon(Icons.shopping_cart_checkout_outlined, size: 16),
-                    ],
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(60, 30),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('Buy',
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold)),
-                      SizedBox(width: 4),
-                      Icon(Icons.attach_money_outlined, size: 16),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }

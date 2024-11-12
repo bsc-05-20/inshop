@@ -229,7 +229,7 @@ Widget _buildDeliveryTile(Map<String, dynamic> delivery) {
           Text(
             'Delivery Date: ${delivery['deliveryDate']}',
             style: const TextStyle(
-              fontSize: 14, 
+              fontSize: 14,
               fontWeight: FontWeight.bold, // Made bold
               color: Colors.grey,
             ),
@@ -238,7 +238,7 @@ Widget _buildDeliveryTile(Map<String, dynamic> delivery) {
           Text(
             'Recipient: ${delivery['recipient']}',
             style: const TextStyle(
-              fontSize: 14, 
+              fontSize: 14,
               fontWeight: FontWeight.bold, // Made bold
               color: Colors.grey,
             ),
