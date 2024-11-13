@@ -8,7 +8,7 @@ import 'package:inshop/widgets/product.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -23,21 +23,23 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       final data = await supabase
           .from('product')
-          .select('id, product_name, price, rating, imageUrl')
+          .select('id, product_name, price, rating, imageUrl') // Include imageUrl
           .limit(10);
 
+      print('Raw data fetched from Supabase: $data'); // Log the fetched data
       if ((data as List<dynamic>).isEmpty) {
+        print('No data found for the category $category');
         return [];
       }
 
-      return (data as List<dynamic>)
-          .map((json) => Product.fromJson(json))
-          .toList();
+      return (data as List<dynamic>).map((json) => Product.fromJson(json)).toList();
     } catch (e) {
+      print('Error fetching products: $e');
       return [];
     }
   }
 
+  // Build the category view for the products
   Widget _buildCategoryView(String category) {
     return FutureBuilder<List<Product>>(
       future: _fetchProducts(category),
@@ -51,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(child: Text('No products found.'));
         }
+
         final products = snapshot.data!;
         return GridView.builder(
           padding: const EdgeInsets.all(16.0),
@@ -66,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: product.title,
               rating: product.rating,
               price: product.price,
-              imageUrl: product.imageUrl,
+              imageUrl: product.imageUrl, // Pass imageUrl here
             );
           },
         );
@@ -99,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       case 3:
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const DeliveryScreen()),
+          MaterialPageRoute(builder: (context) => DeliveryScreen()),
         );
         break;
     }
@@ -109,11 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(title: 'Home'), // Use the reusable AppBar
-      body: _selectedIndex == 0
-          ? _buildCategoryView('cars') // Replace with a valid category
-          : Center(
-              child: Text(
-                  'Screen $_selectedIndex')), // Placeholder for other screens
+      body: _buildCategoryView('cars'), // Replace with a valid category
       bottomNavigationBar: BottomNavigation(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,

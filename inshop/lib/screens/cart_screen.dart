@@ -1,32 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:inshop/widgets/custom_search_delegate.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+  final String userId; // Accept userId as a parameter
+
+  const CartScreen({super.key, required this.userId});
 
   @override
   _CartScreenState createState() => _CartScreenState();
 }
 
 class _CartScreenState extends State<CartScreen> {
-  int _selectedIndex = 1; // Set initial index to 1 for Orders
+  final supabase = Supabase.instance.client;
+  List<Map<String, dynamic>> cartItems = [];
 
-  // Sample cart data
-  final List<Map<String, dynamic>> cartItems = [
-    {
-      'imageUrl': 'assets/Car.jpg',
-      'productName': 'Car',
-      'quantity': 1,
-      'price': 480.00,
-    },
-    // Add more items as needed
-  ];
+Future<void> _fetchCartItems() async {
+  try {
+    final response = await supabase
+        .from('cart')
+        .select('id, quantity, imageUrl, price, product_name') // Ensure this matches the actual column names
+        .eq('user_id', widget.userId) // Filter by user_id
+        .limit(10); // Optional, depending on how many items you want to retrieve
 
-  void _onItemTapped(int index) {
+    // Check if the response contains an error
+
+    // Assuming response.data is a list of maps (dynamic list)
+    final List<Map<String, dynamic>> cartItemsList = List<Map<String, dynamic>>.from(response);
+
     setState(() {
-      _selectedIndex = index;
+      cartItems = cartItemsList;
     });
+
+  } catch (e) {
+    print('Error: $e');
   }
+}
+
 
   double get totalAmount {
     double total = 0.0;
@@ -37,6 +46,12 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _fetchCartItems();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -44,26 +59,6 @@ class _CartScreenState extends State<CartScreen> {
           'Cart',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: IconButton(
-              icon: const Icon(Icons.search, size: 36),
-              onPressed: () {
-                showSearch(context: context, delegate: CustomSearchDelegate());
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: IconButton(
-              icon: const Icon(Icons.add_shopping_cart_sharp, size: 36),
-              onPressed: () {
-                // Add your cart functionality here
-              },
-            ),
-          ),
-        ],
       ),
       body: ListView.builder(
         itemCount: cartItems.length,
@@ -104,8 +99,8 @@ class _CartScreenState extends State<CartScreen> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: Image.asset(
-                item['imageUrl'],
+              child: Image.network(
+                item['imageUrl'], // Use the URL from Supabase storage
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,
@@ -117,52 +112,31 @@ class _CartScreenState extends State<CartScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item['productName'],
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    item[
+                        'productName'], // This will depend on how you fetch the product name
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
                   const SizedBox(height: 5),
                   Text(
                     'Quantity: ${item['quantity']}',
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey), // Bold quantity
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey),
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    '\$${item['price'].toStringAsFixed(2)}',
-                    style: const TextStyle(fontSize: 16, color: Colors.green),
+                    'Price: \$${(item['price'] * item['quantity']).toStringAsFixed(2)}',
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green),
                   ),
                 ],
               ),
-            ),
-            // Quantity control buttons
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.remove, color: Colors.blue),
-                  onPressed: () {
-                    setState(() {
-                      if (item['quantity'] > 1) {
-                        item['quantity']--; // Decrease quantity
-                      }
-                    });
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.add, color: Colors.blue),
-                  onPressed: () {
-                    setState(() {
-                      item['quantity']++; // Increase quantity
-                    });
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.red),
-                  onPressed: () {
-                    // Add remove item functionality here
-                  },
-                ),
-              ],
             ),
           ],
         ),

@@ -35,9 +35,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: const Icon(Icons.add_shopping_cart_sharp, size: 36),
           onPressed: () {
+            final userId =
+                'your_user_id_here'; // Replace with the actual user ID
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const CartScreen(),
+                builder: (context) =>
+                    CartScreen(userId: userId), // Pass userId here
               ),
             );
           },
@@ -101,8 +104,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             onSelected: (item) {
               switch (item) {
                 case 1:
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const ProfileScreen()));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ProfileScreen()));
                   break;
                 case 2:
                   _showLogoutDialog(context); // Show the logout dialog

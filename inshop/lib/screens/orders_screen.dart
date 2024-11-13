@@ -18,30 +18,34 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   final int _selectedIndex = 1; // Set initial index to 1 for Orders
+  String userId = 'your_user_id';
 
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-          (route) => false,
-        );
-        break;
-      case 1:
-        // Already on Orders
-        break;
-      case 2:
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const SellScreen()),
-        );
-        break;
-      case 3:
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const DeliveryScreen()),
-        );
-        break;
-    }
+void _onItemTapped(int index) {
+  switch (index) {
+    case 0:
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(), // Pass userId here
+        ),
+        (route) => false,
+      );
+      break;
+    case 1:
+      // Already on Orders
+      break;
+    case 2:
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const SellScreen()),
+      );
+      break;
+    case 3:
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => DeliveryScreen()),
+      );
+      break;
   }
+}
+
 
   void _showLogoutDialog() {
     showDialog(
@@ -78,7 +82,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const CartScreen(),
+                  builder: (context) => CartScreen(userId: userId),
                 ),
               );
             },
@@ -87,7 +91,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
             icon: const Icon(Icons.notification_important_outlined, size: 36),
             onPressed: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const AlertsScreen()));
+                MaterialPageRoute(builder: (context) => const AlertsScreen()),
+              );
             },
           ),
           Padding(
@@ -143,7 +148,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 switch (item) {
                   case 1:
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const ProfileScreen()));
+                      MaterialPageRoute(
+                          builder: (context) => const ProfileScreen()),
+                    );
                     break;
                   case 2:
                     _showLogoutDialog(); // Show the logout dialog
@@ -235,26 +242,36 @@ class _OrdersScreenState extends State<OrdersScreen> {
         children: [
           Text(
             'Product: $productName',
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600), // Increased font size and weight
+            style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600), // Increased font size and weight
           ),
           const SizedBox(height: 5),
           Text(
             'Quantity: $quantity',
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500), // Increased font weight
+            style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500), // Increased font weight
           ),
           Text(
             'Date: $date',
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500), // Increased font weight
+            style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500), // Increased font weight
           ),
           if (orderType == 'Incoming') ...[
             Text(
               'From: $sender',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500), // Increased font weight
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500), // Increased font weight
             ),
           ] else if (orderType == 'Sent') ...[
             Text(
               'To: $recipient',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500), // Increased font weight
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500), // Increased font weight
             ),
           ],
         ],

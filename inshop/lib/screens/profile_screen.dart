@@ -15,12 +15,13 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final int _selectedIndex = 1; // Set initial index to 1 for Profile
+  String userId = 'your_hardcoded_user_id'; // Hardcoded userId
 
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) =>  HomeScreen()),
           (route) => false,
         );
         break;
@@ -39,7 +40,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         break;
       case 4:
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const CartScreen()),
+          MaterialPageRoute(
+            builder: (context) =>
+                CartScreen(userId: userId), // Pass the hardcoded userId here
+          ),
         );
         break;
     }

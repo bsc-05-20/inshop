@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:inshop/screens/alerts_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:inshop/screens/home_screen.dart';
 import 'package:inshop/screens/cart_screen.dart';
-import 'package:inshop/screens/home_screen.dart'; // Import HomeScreen
-import 'package:inshop/screens/orders_screen.dart'; // Import OrdersScreen
-import 'package:inshop/screens/deliveries_screen.dart'; // Import AlertsScreen
+import 'package:inshop/screens/alerts_screen.dart';
+import 'package:inshop/screens/orders_screen.dart';
+import 'package:inshop/screens/deliveries_screen.dart';
 import 'package:inshop/screens/profile_screen.dart';
 import 'package:inshop/widgets/bottom_navigation.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
-import 'package:inshop/widgets/logout_confirmation_dialog.dart'; // Import the dialog
+import 'package:inshop/widgets/logout_confirmation_dialog.dart';
 
 class SellScreen extends StatefulWidget {
   const SellScreen({super.key});
@@ -18,13 +19,23 @@ class SellScreen extends StatefulWidget {
 
 class _SellScreenState extends State<SellScreen> {
   final int _selectedIndex = 2; // Set initial index to 2 for Sell
+  String? userId = 'hardcoded_user_id'; // Assign the hardcoded userId
+
+  @override
+  void initState() {
+    super.initState();
+    // Since userId is hardcoded, no need to fetch it from Supabase
+  }
 
   // This function will be called when a bottom navigation item is tapped
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
+        // Pass the hardcoded userId to the HomeScreen when navigating
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(), // Pass the userId here
+          ),
           (route) => false,
         );
         break;
@@ -38,7 +49,7 @@ class _SellScreenState extends State<SellScreen> {
         break;
       case 3:
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const DeliveryScreen()),
+          MaterialPageRoute(builder: (context) => DeliveryScreen()),
         );
         break;
     }
@@ -76,13 +87,15 @@ class _SellScreenState extends State<SellScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.add_shopping_cart_sharp, size: 36),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const CartScreen(),
-                ),
-              );
-            },
+            onPressed: userId == null
+                ? null // Disable the button until the userId is fetched
+                : () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CartScreen(userId: userId!),
+                      ),
+                    );
+                  },
           ),
           IconButton(
             icon: const Icon(Icons.notification_important_outlined, size: 36),
@@ -143,8 +156,8 @@ class _SellScreenState extends State<SellScreen> {
               onSelected: (item) {
                 switch (item) {
                   case 1:
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const ProfileScreen()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const ProfileScreen()));
                     break;
                   case 2:
                     _showLogoutDialog(); // Show the logout dialog
