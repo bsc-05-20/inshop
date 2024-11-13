@@ -15,29 +15,29 @@ class _HomeScreenState extends State<HomeScreen> {
   // Fetch products by category from Supabase
   Future<List<Product>> _fetchProducts(String category) async {
     try {
-      final response = await supabase
-          .from('Product') // Ensure this matches your actual table name
-          .select('id, imageUrl, title, rating, price') // Specify columns explicitly
-          .eq('category', category)
+      final data = await supabase
+          .from('product')
+          .select('id, product_name, price, rating')
+          //.eq('category', category)
           .limit(10);
 
-      if (response == null) {
-        print('Error: No data received');
+      print('Raw data fetched from Supabase: $data'); // Log the fetched data
+
+      if ((data as List<dynamic>).isEmpty) {
+        print('No data found for the category $category');
         return [];
       }
 
-      // Convert response data to a list of Product objects
-      final data = response as List<dynamic>;
-      return data.map((json) => Product.fromJson(json)).toList();
+      return (data as List<dynamic>).map((json) => Product.fromJson(json)).toList();
     } catch (e) {
-      print('Unexpected error: $e');
+      print('Error fetching products: $e');
       return [];
     }
   }
 
   Widget _buildCategoryView(String category) {
     return FutureBuilder<List<Product>>(
-      future: _fetchProducts(category), // Ensure the category is passed
+      future: _fetchProducts(category),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -60,7 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
           itemBuilder: (context, index) {
             final product = products[index];
             return Product(
-              imageUrl: product.imageUrl,
               title: product.title,
               rating: product.rating,
               price: product.price,
@@ -80,12 +79,12 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
-              setState(() {}); // Refresh the FutureBuilder by calling setState
+              setState(() {}); // Refresh FutureBuilder by calling setState
             },
           ),
         ],
       ),
-      body: _buildCategoryView('electronics'), // Replace 'electronics' with an actual category
+      body: _buildCategoryView('cars'), // Replace with a valid category
     );
   }
 }
