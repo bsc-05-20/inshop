@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       final data = await supabase
           .from('product')
-          .select('id, product_name, price, rating')
+          .select('id, product_name, price, rating, imageUrl') // Include imageUrl
           //.eq('category', category)
           .limit(10);
 
@@ -63,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: product.title,
               rating: product.rating,
               price: product.price,
+              imageUrl: product.imageUrl, // Pass imageUrl here
             );
           },
         );

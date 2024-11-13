@@ -4,50 +4,109 @@ class Product extends StatelessWidget {
   final String title;
   final double rating;
   final double price;
+  final String imageUrl;
 
   const Product({
     super.key,
     required this.title,
     required this.rating,
     required this.price,
+    required this.imageUrl,
   });
 
-  // Map JSON data to Product model, with null check for rating
+  // Map JSON data to Product model, with null check for rating and imageUrl fallback
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      title: json['product_name'], // Use 'product_name' as column name in Supabase
-      rating: json['rating'] != null ? json['rating'].toDouble() : 0.0, // Check if rating is null
+      title: json['product_name'],
+      rating: json['rating'] != null ? json['rating'].toDouble() : 0.0,
       price: json['price'].toDouble(),
+      imageUrl: json['imageUrl'] ?? 'https://via.placeholder.com/150', // Fallback URL
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4.0,
-      margin: const EdgeInsets.all(8.0),
+    return SizedBox(
+      height: 270,
+      width: 175,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              title,
-              style: Theme.of(context).textTheme.titleLarge,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16.0),
+            child: Image.network(
+              imageUrl,
+              fit: BoxFit.cover,
+              height: 90,
+              width: double.infinity,
+              errorBuilder: (context, error, stackTrace) => Image.network(
+                'https://via.placeholder.com/150',
+                fit: BoxFit.cover,
+                height: 90,
+                width: double.infinity,
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                const Icon(Icons.star, color: Colors.yellow),
-                Text('$rating', style: const TextStyle(fontSize: 16)),
-              ],
-            ),
+          const SizedBox(height: 2),
+          Text(
+            title,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('\$$price', style: const TextStyle(fontSize: 16)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.star, size: 18, color: Colors.orange),
+                  Text(
+                    '$rating Review',
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Text(
+                '\$$price',
+                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(15, 189, 189, 189),
+                  foregroundColor: Colors.black87,
+                  side: const BorderSide(
+                    color: Color.fromARGB(193, 82, 81, 81),
+                    width: 1.0,
+                  ),
+                  minimumSize: const Size(69, 28),
+                ),
+                onPressed: () {},
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.shopping_cart_rounded, size: 16),
+                    SizedBox(width: 4),
+                    Text('Add', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(69, 28),
+                ),
+                onPressed: () {},
+                child: const Text(
+                  'Buy',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
           ),
         ],
       ),
