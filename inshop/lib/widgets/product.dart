@@ -37,12 +37,12 @@ class Product extends StatelessWidget {
             child: Image.network(
               imageUrl,
               fit: BoxFit.cover,
-              height: 90,
+              height: 84,
               width: double.infinity,
               errorBuilder: (context, error, stackTrace) => Image.network(
                 'https://via.placeholder.com/150',
                 fit: BoxFit.cover,
-                height: 90,
+                height: 84,
                 width: double.infinity,
               ),
             ),
