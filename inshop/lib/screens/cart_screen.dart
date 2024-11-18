@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inshop/widgets/cart_product.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CartScreen extends StatefulWidget {
@@ -17,10 +18,9 @@ class _CartScreenState extends State<CartScreen> {
     try {
       final response = await supabase
           .from('cart')
-          .select('id, quantity, imageUrl, price, product_name') // Include all necessary columns
+          .select('id, quantity, imageUrl, price, product_name')
           .limit(10); // Limit results to 10 items for now
 
-      // Convert response data into a list of maps
       final List<Map<String, dynamic>> cartItemsList =
           List<Map<String, dynamic>>.from(response);
 
@@ -32,11 +32,29 @@ class _CartScreenState extends State<CartScreen> {
     }
   }
 
+  // Update the quantity in the cart and Supabase
+  Future<void> _updateCartQuantity(String id, int newQuantity) async {
+    setState(() {
+      final itemIndex = cartItems.indexWhere((item) => item['id'] == id);
+      if (itemIndex != -1) {
+        cartItems[itemIndex]['quantity'] = newQuantity;
+      }
+    });
+
+    try {
+      await supabase.from('cart').update({'quantity': newQuantity}).eq('id', id);
+    } catch (e) {
+      print('Error updating cart quantity: $e');
+    }
+  }
+
   // Calculate the total amount
   double get totalAmount {
     double total = 0.0;
     for (var item in cartItems) {
-      total += item['price'] * item['quantity'];
+      final price = (item['price'] as num).toDouble();
+      final quantity = (item['quantity'] as num).toDouble();
+      total += price * quantity;
     }
     return total;
   }
@@ -66,15 +84,26 @@ class _CartScreenState extends State<CartScreen> {
           : ListView.builder(
               itemCount: cartItems.length,
               itemBuilder: (context, index) {
-                return _buildCartItem(cartItems[index]);
+                final item = cartItems[index];
+                return CartProduct(
+                  imageUrl: item['imageUrl'],
+                  title: item['product_name'],
+                  quantity: (item['quantity'] as num).toInt(),
+                  price: (item['price'] as num).toDouble(),
+                  onQuantityChanged: (newQuantity) {
+                    _updateCartQuantity(item['id'] as String, newQuantity);
+                  },
+                );
               },
             ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
-          onPressed: () {
-            // Add checkout functionality here
-          },
+          onPressed: cartItems.isEmpty
+              ? null
+              : () {
+                  print('Checkout with total amount: \$${totalAmount.toStringAsFixed(2)}');
+                },
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.all(16.0),
             backgroundColor: Colors.green,
@@ -87,61 +116,6 @@ class _CartScreenState extends State<CartScreen> {
             'Checkout for \$${totalAmount.toStringAsFixed(2)}',
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-        ),
-      ),
-    );
-  }
-
-  // Build a single cart item widget
-  Widget _buildCartItem(Map<String, dynamic> item) {
-    return Card(
-      elevation: 5,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: Image.network(
-                item['imageUrl'], // Use the imageUrl from Supabase
-                width: 80,
-                height: 80,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item['product_name'], // Display the product name
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    'Quantity: ${item['quantity']}',
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    'Price: \$${(item['price'] * item['quantity']).toStringAsFixed(2)}',
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green),
-                  ),
-                ],
-              ),
-            ),
-          ],
         ),
       ),
     );
