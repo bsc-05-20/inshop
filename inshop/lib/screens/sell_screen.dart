@@ -34,7 +34,7 @@ class _SellScreenState extends State<SellScreen> {
         // Pass the hardcoded userId to the HomeScreen when navigating
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => HomeScreen(), // Pass the userId here
+            builder: (context) => const HomeScreen(), // Pass the userId here
           ),
           (route) => false,
         );
@@ -92,7 +92,7 @@ class _SellScreenState extends State<SellScreen> {
                 : () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => CartScreen(userId: userId!),
+                        builder: (context) => const CartScreen(),
                       ),
                     );
                   },

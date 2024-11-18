@@ -21,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     switch (index) {
       case 0:
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) =>  HomeScreen()),
+          MaterialPageRoute(builder: (context) =>  const HomeScreen()),
           (route) => false,
         );
         break;
@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) =>
-                CartScreen(userId: userId), // Pass the hardcoded userId here
+                const CartScreen(), // Pass the hardcoded userId here
           ),
         );
         break;

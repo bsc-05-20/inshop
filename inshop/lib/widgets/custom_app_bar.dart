@@ -9,9 +9,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
   const CustomAppBar({
-    Key? key,
+    super.key,
     required this.title,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +35,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: const Icon(Icons.add_shopping_cart_sharp, size: 36),
           onPressed: () {
-            final userId =
+            const userId =
                 'your_user_id_here'; // Replace with the actual user ID
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) =>
-                    CartScreen(userId: userId), // Pass userId here
+                    const CartScreen(), // Pass userId here
               ),
             );
           },

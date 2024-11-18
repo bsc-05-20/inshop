@@ -25,7 +25,7 @@ void _onItemTapped(int index) {
     case 0:
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => HomeScreen(), // Pass userId here
+          builder: (context) => const HomeScreen(), // Pass userId here
         ),
         (route) => false,
       );
@@ -82,7 +82,7 @@ void _onItemTapped(int index) {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => CartScreen(userId: userId),
+                  builder: (context) => const CartScreen(),
                 ),
               );
             },

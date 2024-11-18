@@ -8,6 +8,8 @@ import 'package:inshop/widgets/bottom_navigation.dart';
 import 'package:inshop/widgets/custom_search_delegate.dart';
 
 class DeliveryScreen extends StatefulWidget {
+  const DeliveryScreen({super.key});
+
   @override
   _DeliveryScreenState createState() => _DeliveryScreenState();
 }
@@ -42,7 +44,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) =>
-                HomeScreen(), // Pass userId here
+                const HomeScreen(), // Pass userId here
           ),
           (route) => false,
         );
@@ -84,7 +86,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => CartScreen(userId: userId),
+                  builder: (context) => const CartScreen(),
                 ),
               );
             },

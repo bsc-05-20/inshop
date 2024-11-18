@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CartScreen extends StatefulWidget {
-  final String userId; // Accept userId as a parameter
-
-  const CartScreen({super.key, required this.userId});
+  const CartScreen({super.key});
 
   @override
   _CartScreenState createState() => _CartScreenState();
@@ -14,29 +12,27 @@ class _CartScreenState extends State<CartScreen> {
   final supabase = Supabase.instance.client;
   List<Map<String, dynamic>> cartItems = [];
 
-Future<void> _fetchCartItems() async {
-  try {
-    final response = await supabase
-        .from('cart')
-        .select('id, quantity, imageUrl, price, product_name') // Ensure this matches the actual column names
-        .eq('user_id', widget.userId) // Filter by user_id
-        .limit(10); // Optional, depending on how many items you want to retrieve
+  // Fetch all cart items from Supabase
+  Future<void> _fetchCartItems() async {
+    try {
+      final response = await supabase
+          .from('cart')
+          .select('id, quantity, imageUrl, price, product_name') // Include all necessary columns
+          .limit(10); // Limit results to 10 items for now
 
-    // Check if the response contains an error
+      // Convert response data into a list of maps
+      final List<Map<String, dynamic>> cartItemsList =
+          List<Map<String, dynamic>>.from(response);
 
-    // Assuming response.data is a list of maps (dynamic list)
-    final List<Map<String, dynamic>> cartItemsList = List<Map<String, dynamic>>.from(response);
-
-    setState(() {
-      cartItems = cartItemsList;
-    });
-
-  } catch (e) {
-    print('Error: $e');
+      setState(() {
+        cartItems = cartItemsList;
+      });
+    } catch (e) {
+      print('Error fetching cart items: $e');
+    }
   }
-}
 
-
+  // Calculate the total amount
   double get totalAmount {
     double total = 0.0;
     for (var item in cartItems) {
@@ -60,12 +56,19 @@ Future<void> _fetchCartItems() async {
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
         ),
       ),
-      body: ListView.builder(
-        itemCount: cartItems.length,
-        itemBuilder: (context, index) {
-          return _buildCartItem(cartItems[index]);
-        },
-      ),
+      body: cartItems.isEmpty
+          ? const Center(
+              child: Text(
+                'Your cart is empty',
+                style: TextStyle(fontSize: 18, color: Colors.grey),
+              ),
+            )
+          : ListView.builder(
+              itemCount: cartItems.length,
+              itemBuilder: (context, index) {
+                return _buildCartItem(cartItems[index]);
+              },
+            ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
@@ -89,6 +92,7 @@ Future<void> _fetchCartItems() async {
     );
   }
 
+  // Build a single cart item widget
   Widget _buildCartItem(Map<String, dynamic> item) {
     return Card(
       elevation: 5,
@@ -100,7 +104,7 @@ Future<void> _fetchCartItems() async {
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: Image.network(
-                item['imageUrl'], // Use the URL from Supabase storage
+                item['imageUrl'], // Use the imageUrl from Supabase
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,
@@ -112,8 +116,7 @@ Future<void> _fetchCartItems() async {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item[
-                        'productName'], // This will depend on how you fetch the product name
+                    item['product_name'], // Display the product name
                     style: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
