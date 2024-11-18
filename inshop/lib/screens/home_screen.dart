@@ -17,29 +17,73 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final supabase = Supabase.instance.client;
   int _selectedIndex = 0; // Track the selected index
+  final List<Map<String, dynamic>> _cartItems = []; // List to store cart items
 
   // Fetch products by category from Supabase
   Future<List<Product>> _fetchProducts(String category) async {
     try {
       final data = await supabase
           .from('product')
-          .select('id, product_name, price, rating, imageUrl') // Include imageUrl
+          .select('id, product_name, price, rating, imageUrl')
           .limit(10);
 
-      print('Raw data fetched from Supabase: $data'); // Log the fetched data
-      if ((data as List<dynamic>).isEmpty) {
-        print('No data found for the category $category');
-        return [];
-      }
+      if (data == null || (data as List).isEmpty) return [];
 
-      return (data as List<dynamic>).map((json) => Product.fromJson(json)).toList();
+      return (data as List<dynamic>)
+          .map((json) => Product.fromJson(json))
+          .toList();
     } catch (e) {
       print('Error fetching products: $e');
       return [];
     }
   }
 
-  // Build the category view for the products
+  void _addToCart(String productId, double price) async {
+    try {
+      // Fetch product details, including product name and imageUrl
+      final response = await supabase
+          .from('product')
+          .select('product_name, imageUrl')
+          .eq('id', productId)
+          .single();
+
+      if (response == null) {
+        print('Error: No response from database');
+        return;
+      }
+
+      // Safely access product name and imageUrl
+      final productName = response['product_name'] ?? 'Unknown Product';
+      final imageUrl =
+          response['imageUrl'] ?? 'https://via.placeholder.com/150';
+
+      // Insert into cart
+      final cartResponse = await supabase.from('cart').insert({
+        'product_id': productId,
+        'product_name': productName, // Add product_name
+        'imageUrl': imageUrl,
+        'price': price,
+        'quantity': 1,
+      });
+
+      if (cartResponse.error == null) {
+        setState(() {
+          _cartItems.add({
+            'id': productId,
+            'imageUrl': imageUrl,
+            'productName': productName, // Store productName in cartItems
+            'price': price,
+          });
+        });
+        print('Product added to cart');
+      } else {
+        print('Error adding to cart: ${cartResponse.error.message}');
+      }
+    } catch (e) {
+      print('Error adding product to cart: $e');
+    }
+  }
+
   Widget _buildCategoryView(String category) {
     return FutureBuilder<List<Product>>(
       future: _fetchProducts(category),
@@ -47,14 +91,10 @@ class _HomeScreenState extends State<HomeScreen> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(child: Text('No products found.'));
         }
 
-        final products = snapshot.data!;
         return GridView.builder(
           padding: const EdgeInsets.all(16.0),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -62,14 +102,16 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisSpacing: 16.0,
             mainAxisSpacing: 16.0,
           ),
-          itemCount: products.length,
+          itemCount: snapshot.data!.length,
           itemBuilder: (context, index) {
-            final product = products[index];
+            final product = snapshot.data![index];
             return Product(
+              id: product.id,
               title: product.title,
               rating: product.rating,
               price: product.price,
-              imageUrl: product.imageUrl, // Pass imageUrl here
+              imageUrl: product.imageUrl,
+              onAddToCart: () => _addToCart(product.id, product.price),
             );
           },
         );
@@ -77,19 +119,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Navigation handling for bottom navigation bar
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
 
     switch (index) {
-      case 0:
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-          (route) => false,
-        );
-        break;
       case 1:
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => const OrdersScreen()),
@@ -102,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       case 3:
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => DeliveryScreen()),
+          MaterialPageRoute(builder: (context) => const DeliveryScreen()),
         );
         break;
     }
@@ -111,8 +146,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Home'), // Use the reusable AppBar
-      body: _buildCategoryView('cars'), // Replace with a valid category
+      appBar: const CustomAppBar(title: 'Home'),
+      body: _buildCategoryView('cars'), // Default category
       bottomNavigationBar: BottomNavigation(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,

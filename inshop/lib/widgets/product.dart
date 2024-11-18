@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 
 class Product extends StatelessWidget {
+  final String id;
   final String title;
   final double rating;
   final double price;
   final String imageUrl;
+  final Function onAddToCart; // Callback for Add to Cart button
 
   const Product({
     super.key,
+    required this.id,
     required this.title,
     required this.rating,
     required this.price,
     required this.imageUrl,
+    required this.onAddToCart, // Initialize the callback
   });
 
-  // Map JSON data to Product model, with null check for rating and imageUrl fallback
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
+      id: json['id'],
       title: json['product_name'],
       rating: json['rating'] != null ? json['rating'].toDouble() : 0.0,
       price: json['price'].toDouble(),
-      imageUrl: json['imageUrl'] ?? 'https://via.placeholder.com/150', // Fallback URL
+      imageUrl: json['imageUrl'] ?? 'https://via.placeholder.com/150',
+      onAddToCart: () {}, // Placeholder callback
     );
   }
 
@@ -84,7 +89,7 @@ class Product extends StatelessWidget {
                   ),
                   minimumSize: const Size(69, 28),
                 ),
-                onPressed: () {},
+                onPressed: () => onAddToCart(), // Call the callback
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
